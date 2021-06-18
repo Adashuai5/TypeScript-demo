@@ -44,7 +44,7 @@ describe("DeepClone", () => {
       const a = [
         [1, 2, 3],
         [2, 3, 4],
-        [12, 23, 34]
+        [12, 23, 34],
       ];
       const a1 = new DeepClone().clone(a);
       assert(a[0] !== a1[0]);
@@ -53,7 +53,7 @@ describe("DeepClone", () => {
       assert.deepEqual(a, a1);
     });
     it("能够复制函数", () => {
-      const a = function() {
+      const a = function () {
         return 1;
       };
       a.xxx = { yyy: { zzz: 1 } };
@@ -118,61 +118,63 @@ describe("DeepClone", () => {
     });
 
     it("很复杂的对象", () => {
-      const a = {
-        n: NaN,
-        n2: Infinity,
-        s: "",
-        bool: false,
-        null: null,
-        u: undefined,
-        sym: Symbol(),
-        o: {
-          n: NaN,
-          n2: Infinity,
-          s: "",
-          bool: false,
-          null: null,
-          u: undefined,
-          sym: Symbol()
+      let a = {
+        num: 0,
+        str: "",
+        boolean: true,
+        unf: undefined,
+        nul: null,
+        obj: { name: "我是一个对象", id: 1 },
+        arr: [0, 1, 2],
+        func: function () {
+          console.log("我是一个函数");
         },
-        array: [
-          {
-            n: NaN,
-            n2: Infinity,
-            s: "",
-            bool: false,
-            null: null,
-            u: undefined,
-            sym: Symbol()
-          }
-        ]
+        date: new Date(0),
+        reg: new RegExp("/我是一个正则/ig"),
+        symbol: [Symbol("1")],
       };
+
+      Object.defineProperty(a, "innumerable", {
+        enumerable: false,
+        value: "不可枚举属性",
+      });
+
+      a = Object.create(a, Object.getOwnPropertyDescriptors(a));
+
+      a.loop = a;
+
       const a1 = new DeepClone().clone(a);
       assert(a !== a1);
-      assert.isNaN(a1.n);
-      assert(a.n2 === a1.n2);
-      assert(a.s === a1.s);
-      assert(a.bool === a1.bool);
-      assert(a.null === a1.null);
-      assert(a.u === a1.u);
-      assert(a.sym === a1.sym);
-      assert(a.o !== a1.o);
-      assert.isNaN(a1.o.n);
-      assert(a.o.n2 === a1.o.n2);
-      assert(a.o.s === a1.o.s);
-      assert(a.o.bool === a1.o.bool);
-      assert(a.o.null === a1.o.null);
-      assert(a.o.u === a1.o.u);
-      assert(a.o.sym === a1.o.sym);
-      assert(a.array !== a1.array);
-      assert(a.array[0] !== a1.array[0]);
-      assert.isNaN(a1.array[0].n);
-      assert(a.array[0].n2 === a1.array[0].n2);
-      assert(a.array[0].s === a1.array[0].s);
-      assert(a.array[0].bool === a1.array[0].bool);
-      assert(a.array[0].null === a1.array[0].null);
-      assert(a.array[0].u === a1.array[0].u);
-      assert(a.array[0].sym === a1.array[0].sym);
+
+      a1.arr.push(4);
+
+      console.log("a", a);
+
+      console.log("a1", a1);
+      // assert.isNaN(a1.n);
+      // assert(a.n2 === a1.n2);
+      // assert(a.s === a1.s);
+      // assert(a.bool === a1.bool);
+      // assert(a.null === a1.null);
+      // assert(a.u === a1.u);
+      // assert(a.sym === a1.sym);
+      // assert(a.o !== a1.o);
+      // assert.isNaN(a1.o.n);
+      // assert(a.o.n2 === a1.o.n2);
+      // assert(a.o.s === a1.o.s);
+      // assert(a.o.bool === a1.o.bool);
+      // assert(a.o.null === a1.o.null);
+      // assert(a.o.u === a1.o.u);
+      // assert(a.o.sym === a1.o.sym);
+      // assert(a.array !== a1.array);
+      // assert(a.array[0] !== a1.array[0]);
+      // assert.isNaN(a1.array[0].n);
+      // assert(a.array[0].n2 === a1.array[0].n2);
+      // assert(a.array[0].s === a1.array[0].s);
+      // assert(a.array[0].bool === a1.array[0].bool);
+      // assert(a.array[0].null === a1.array[0].null);
+      // assert(a.array[0].u === a1.array[0].u);
+      // assert(a.array[0].sym === a1.array[0].sym);
     });
   });
 });
