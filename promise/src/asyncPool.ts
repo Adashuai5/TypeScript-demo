@@ -1,19 +1,24 @@
-const asyncPool = (generator, params, maxNum) => {
-  const res = []
-  const queue = []
+/**
+ * Promise.all并发限制
+ */
 
+const asyncPool = (
+  generator: { (data: unknown): Promise<unknown>; (arg0: any): any },
+  params: string | any[],
+  maxNum: number
+) => {
+  const res: any[] = []
+  const queue: any[] = []
   let i = 0
-
-  const loop = () => {
+  const loop: () => any = async () => {
     if (i === params.length) {
       return Promise.resolve()
     }
-
     const item = params[i]
     const fn = Promise.resolve().then(() => generator(item))
 
-    queue.push(fn)
     res.push(fn)
+    queue.push(fn)
 
     fn.then(() => {
       queue.splice(queue.indexOf(fn), 1)
@@ -21,27 +26,26 @@ const asyncPool = (generator, params, maxNum) => {
 
     i++
 
-    let r
-
     if (i < maxNum) {
-      r = Promise.resolve()
+      await Promise.resolve()
+      return loop()
     } else {
-      r = Promise.race(queue)
+      await Promise.race(queue)
+      return loop()
     }
-
-    return r.then(() => loop())
   }
-
   return loop().then(() => Promise.all(res))
 }
 
-const generator = async (data) => {
+const generator = async (data: unknown) => {
   return await new Promise((resolve) => {
     setTimeout(() => {
       console.log(data)
       resolve(data)
-    }, 1000)
+    }, 3000 * Math.random())
   })
 }
 
-asyncPool(generator, [1, 2, 3, 4, 5, 6], 3).then((res) => console.log(res))
+asyncPool(generator, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3).then((res: unknown) =>
+  console.log(res)
+)

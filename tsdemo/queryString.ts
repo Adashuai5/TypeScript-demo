@@ -1,7 +1,7 @@
 /**
- * 3. 解析url中的queryString
+ * 解析url中的queryString
  *
- * 输入：https://www.youzan.com?name=coder&age=20&callback=https%3A%2F%2Fyouzan.com%3Fname%3Dtest&list[]=a&list[]=b&json={str:abc,num:123}
+ * 输入：https://www.youzan.com?name=coder&age=20&callback=https%3A%2F%2Fyouzan.com%3Fname%3Dtest&json={str:abc,num:123}&list[]=a&list[]=b
  * 输出：
  * {
  *  name: "coder",
@@ -20,20 +20,24 @@ const queryString = (string) => {
   const params = query.split('&')
   const returnObj = {}
   params.forEach((param) => {
-    const r = param.split('=')
-    r[1] = unescape(r[1])
-    if (r[0].match(/(\[\])$/)) {
-      r[0] = r[0].replace(/(\[\])$/, '')
-      r[1] = [r[1]]
+    const item = param.split('=')
+    item[1] = unescape(item[1])
+    if (item[1]?.match(/^\{|\}$/g)) {
+      item[1] = JSON.parse(item[1].replace(/[a-zA-Z]\w*/g, ($1) => `"${$1}"`))
     }
-
-    returnObj[r[0]] = returnObj[r[0]]
-      ? returnObj[r[0]].concat(r[1])
-      : JSON.parse(JSON.stringify(r[1]))
+    if (item[0].match(/(\[\])$/g)) {
+      item[0] = item[0].replace(/(\[\])$/g, '')
+      item[1] = [item[1]]
+    }
+    returnObj[item[0]] = returnObj[item[0]]
+      ? returnObj[item[0]].concat(item[1])
+      : item[1]
   })
   return returnObj
 }
 
-queryString(
-  'https://www.youzan.com?name=coder&age=20&callback=https%3A%2F%2Fyouzan.com%3Fname%3Dtest&list[]=a&list[]=b&json={str:abc,num:123}'
+console.log(
+  queryString(
+    'https://www.youzan.com?name=coder&age=20&callback=https%3A%2F%2Fyouzan.com%3Fname%3Dtest&json={str:abc,num:123}&list[]=a&list[]=b'
+  )
 )

@@ -37,6 +37,25 @@ let test3: TestCache = message => {
   }, 1000)
 }
 
+let test4: TestCache = message => {
+  const eventHub = new EventHub()
+  let called = false
+  const fn1 = () => {
+    called = true
+  }
+  eventHub.once('xxx', fn1)
+  setTimeout(() => {
+    console.log(message)
+    console.assert(called === true)
+  }, 1000)
+  eventHub.once('xxx', fn1)
+  setTimeout(() => {
+    console.log(message)
+    console.assert(called === false)
+  }, 1000)
+}
+
 test1('EventHub 可以创建对象')
 test2('.on 之后，.emit 会触发 .on 的函数')
 test3('.off 有用')
+test4('.once 有用')
