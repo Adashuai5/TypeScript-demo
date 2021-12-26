@@ -58,3 +58,5 @@ function min(a: number, b: number): number {
 
 let c: any = min(1, 2);
 console.log(c);
+
+export {}

@@ -11,18 +11,18 @@ const obj = {
   g: 1,
   c: { d: { e: 3 } },
   f: 4,
-};
+}
 const find = (obj, key, value, arr: (number | string)[] = [-1]) => {
-  arr[0] = (arr[0] as number) + 1;
+  arr[0] = (arr[0] as number) + 1
   for (let i in obj) {
-    if (typeof obj[i] === "object") {
-      arr.push(i);
-      find(obj[i], key, value, arr);
+    if (typeof obj[i] === 'object') {
+      arr.push(i)
+      find(obj[i], key, value, arr)
     } else if (obj[i] === value && i === key) {
-      arr.push(i);
-      break;
+      arr.push(i)
+      break
     }
   }
-  return arr.slice(-arr[0]);
-};
-console.log(find(obj, "e", 3));
+  return arr.slice(-arr[0])
+}
+console.log(find(obj, 'e', 3))
