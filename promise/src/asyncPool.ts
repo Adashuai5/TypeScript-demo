@@ -40,7 +40,7 @@ const asyncPool = (
 const generator = async (data: unknown) => {
   return await new Promise((resolve) => {
     setTimeout(() => {
-      console.log(data)
+      // console.log(data)
       resolve(data)
     }, 3000 * Math.random())
   })

@@ -1,0 +1,26 @@
+// 存在如下的html元素，利用flex布局实现左中右三个元素分别占据屏幕的25%、50%、25%
+
+<style>
+  .box {
+    display: flex;
+    height: 100vh;
+  }
+
+  .left,
+  .right {
+    flex: 1;
+    height: 100%;
+  }
+
+  .center {
+    flex: 2;
+    background: #000;
+    height: 100%;
+  }
+</style>
+
+<div class="box">
+  <div class="left"></div>
+  <div class="center"></div>
+  <div class="right"></div>
+</div>

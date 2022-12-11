@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["DOM", "ES5", "ES6", "ES7"] // 增加不支持的版本
+  }
+}

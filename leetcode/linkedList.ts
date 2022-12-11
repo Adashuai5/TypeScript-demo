@@ -132,6 +132,13 @@ function LinkedList() {
 
     return this.removeAt(position)
   }
+
+  LinkedList.prototype.isEmpty = () => {
+    return !this.length
+  }
+  LinkedList.prototype.size = () => {
+    return this.length
+  }
 }
 
 const list = new LinkedList()
@@ -158,3 +165,5 @@ console.log('remove', list.remove('ccc1'))
 console.log('toString', list.toString())
 console.log('remove', list.remove('231321'))
 console.log('toString', list.toString())
+console.log('isEmpty', list.isEmpty())
+console.log('size', list.size())

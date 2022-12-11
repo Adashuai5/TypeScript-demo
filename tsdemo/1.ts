@@ -26,3 +26,19 @@ const find = (obj, key, value, arr: (number | string)[] = [-1]) => {
   return arr.slice(-arr[0])
 }
 console.log(find(obj, 'e', 3))
+
+// any 和 unknown 区别
+type a = {
+  b: unknown
+}
+
+const c: a = {
+  b: 11,
+}
+
+c.b.toFixed(2)
+
+type A = string
+
+type B = A
+
